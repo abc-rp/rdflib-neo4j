@@ -2,7 +2,7 @@ import logging
 from typing import Dict
 
 from neo4j import WRITE_ACCESS, Driver, GraphDatabase
-from rdflib import Graph, Literal, URIRef
+from rdflib import XSD, Graph, Literal, URIRef
 from rdflib.namespace import RDF
 from rdflib.store import Store
 
@@ -453,7 +453,20 @@ class Neo4jStore(Store):
         for key, value in node.items():
             if key != "uri":
                 predicate = URIRef(triple.handle_vocab_uri(self.mappings, key))
-                rdf_graph.add((subject, predicate, Literal(value)))
+
+                # Determine the type of the value and set the appropriate RDF datatype
+                if isinstance(value, int):
+                    rdf_value = Literal(value, datatype=XSD.integer)
+                elif isinstance(value, float):
+                    rdf_value = Literal(value, datatype=XSD.float)
+                elif isinstance(value, str):
+                    rdf_value = Literal(
+                        value
+                    )  # String literals don't need explicit datatype
+                else:
+                    rdf_value = Literal(value)  # Default case
+
+                rdf_graph.add((subject, predicate, rdf_value))
 
     def __add_relationship_to_graph(
         self, start_node, relationship, end_node, rdf_graph
@@ -486,4 +499,17 @@ class Neo4jStore(Store):
         for key, value in relationship.items():
             if key not in ["uri"]:
                 prop_predicate = URIRef(triple.handle_vocab_uri(self.mappings, key))
-                rdf_graph.add((predicate, prop_predicate, Literal(value)))
+
+                # Determine the type of the value and set the appropriate RDF datatype
+                if isinstance(value, int):
+                    rdf_value = Literal(value, datatype=XSD.integer)
+                elif isinstance(value, float):
+                    rdf_value = Literal(value, datatype=XSD.float)
+                elif isinstance(value, str):
+                    rdf_value = Literal(
+                        value
+                    )  # String literals don't need explicit datatype
+                else:
+                    rdf_value = Literal(value)  # Default case
+
+                rdf_graph.add((predicate, prop_predicate, rdf_value))
