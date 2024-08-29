@@ -1,0 +1,139 @@
+@prefix brcomp: <https://w3id.org/brcomp#> .
+@prefix brot: <https://w3id.org/brot#> .
+@prefix brstr: <https://w3id.org/brstr#> .
+@prefix ins: <http://example.org/sibbw79366620/RelocBridgeModel#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ins:Footing_Span_0 a brcomp:Footing ;
+    rdfs:label "Footing Span 0" .
+
+ins:Footing_Span_1 a brcomp:Footing ;
+    rdfs:label "Footing Span 1" .
+
+ins:Footing_Span_2 a brcomp:Footing ;
+    rdfs:label "Footing Span 2" .
+
+ins:GirderCrossGirder_Span_1 a brcomp:GirderCrossGirder ;
+    rdfs:label "GirderCrossGirder_Span_1" ;
+    brcomp:width "12.0"^^xsd:float .
+
+ins:GirderDeck a brcomp:GirderDeck ;
+    rdfs:label "GirderDeck" ;
+    rdfs:comment "height is default value" ;
+    brcomp:height "0.2"^^xsd:float ;
+    brcomp:length "56.75"^^xsd:float ;
+    brcomp:width "12.0"^^xsd:float .
+
+ins:GirderMainGirder_Span_1_1_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 1, first element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float .
+
+ins:GirderMainGirder_Span_1_2_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 1, 2nd element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float .
+
+ins:GirderMainGirder_Span_1_3_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 1, 3rd element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float .
+
+ins:GirderMainGirder_Span_1_4_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 1, 4th element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float .
+
+ins:GirderMainGirder_Span_2_1_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 2, first element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float .
+
+ins:GirderMainGirder_Span_2_2_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 2, 2nd element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float .
+
+ins:GirderMainGirder_Span_2_3_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 2, 3rd element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float .
+
+ins:GirderMainGirder_Span_2_4_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 2, 4th element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float .
+
+ins:Pier_Span_1 a brot:Zone ;
+    rdfs:label "Pier_Zone" ;
+    rdfs:comment "length is default value" ;
+    brcomp:height "6.05"^^xsd:float ;
+    brcomp:length "2.0"^^xsd:float ;
+    brcomp:width "12.0"^^xsd:float .
+
+ins:Pier_Span_1_1_left a brcomp:Pier ;
+    rdfs:label "Pier left" ;
+    brcomp:height "5.0"^^xsd:float ;
+    brcomp:length "2.0"^^xsd:float ;
+    brcomp:width "6.0"^^xsd:float .
+
+ins:Pier_Span_1_1_right a brcomp:Pier ;
+    rdfs:label "Pier Right" ;
+    brcomp:height "5.0"^^xsd:float ;
+    brcomp:length "2.0"^^xsd:float ;
+    brcomp:width "6.0"^^xsd:float .
+
+ins:Railing_left a brcomp:Railing ;
+    rdfs:label "Railing left" ;
+    rdfs:comment "width is default value" ;
+    brcomp:height "1.1"^^xsd:float ;
+    brcomp:length "55.5"^^xsd:float ;
+    brcomp:width "0.25"^^xsd:float .
+
+ins:Railing_right a brcomp:Railing ;
+    rdfs:label "Railing right" ;
+    rdfs:comment "width is default value" ;
+    brcomp:height "1.1"^^xsd:float ;
+    brcomp:length "54.74"^^xsd:float ;
+    brcomp:width "0.25"^^xsd:float .
+
+ins:Span_0 a brstr:Span ;
+    rdfs:label "Span 0" .
+
+ins:Span_1 a brstr:Span ;
+    rdfs:label "Span 1" ;
+    brstr:spanWidth "28.37"^^xsd:float .
+
+ins:Span_2 a brstr:Span ;
+    rdfs:label "Span 2" ;
+    brstr:spanWidth "28.37"^^xsd:float .
+
+ins:Substructure_Zone a brot:SubStructure ;
+    rdfs:label "Substructure Zone" .
+
+ins:Superstructure_Zone a brot:SuperStructure ;
+    rdfs:label "Superstructure Zone" .
+
+ins:TrafficBarrier_left a brcomp:TrafficBarrier ;
+    rdfs:label "TrafficBarrier left" ;
+    rdfs:comment "width is default value" ;
+    brcomp:height "0.6"^^xsd:float ;
+    brcomp:length "55.99"^^xsd:float ;
+    brcomp:width "0.5"^^xsd:float .
+
+ins:TrafficBarrier_right a brcomp:TrafficBarrier ;
+    rdfs:label "TrafficBarrier right" ;
+    rdfs:comment "width is default value" ;
+    brcomp:height "0.6"^^xsd:float ;
+    brcomp:length "55.99"^^xsd:float ;
+    brcomp:width "0.5"^^xsd:float .
+

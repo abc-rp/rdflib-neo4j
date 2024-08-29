@@ -6,7 +6,6 @@ from rdflib import XSD, Graph, Literal, URIRef
 from rdflib.namespace import RDF
 from rdflib.store import Store
 
-# Directly import HANDLE_VOCAB_URI_STRATEGY from its definition module
 from rdflib_neo4j.config.const import NEO4J_DRIVER_USER_AGENT_NAME
 from rdflib_neo4j.config.Neo4jStoreConfig import Neo4jStoreConfig
 from rdflib_neo4j.config.utils import check_auth_data
@@ -381,6 +380,42 @@ class Neo4jStore(Store):
         rdf_graph.serialize(destination=ttl_file_path, format="turtle")
         print(f"RDF data successfully exported to {ttl_file_path}")
 
+
+    def export_cypher_query_to_ttl(self, cypher_query: str, ttl_file_path: str):
+        """
+        Exports the subgraph resulting from a Cypher query to a TTL file.
+
+        Args:
+            cypher_query (str): The Cypher query to execute and extract the subgraph.
+            ttl_file_path (str): The path to the TTL file to write the RDF triples.
+        """
+        assert self.is_open(), "The Store must be open to export."
+
+        # Create a new RDF graph
+        rdf_graph = Graph()
+
+        # Register prefixes
+        self.__register_prefixes(rdf_graph)
+
+        # Execute the Cypher query and retrieve the nodes and relationships
+        result = self.session.run(cypher_query)
+
+        # Iterate through the result and add nodes and relationships to the RDF graph
+        for record in result:
+            node = record.get("n")
+            relationship = record.get("r")
+            end_node = record.get("m")
+
+            if node:
+                self.__add_node_to_graph(node, rdf_graph)
+            if relationship and end_node:
+                self.__add_relationship_to_graph(node, relationship, end_node, rdf_graph)
+
+        # Serialize the RDF graph to a TTL file
+        rdf_graph.serialize(destination=ttl_file_path, format="turtle")
+        print(f"RDF data successfully exported to {ttl_file_path}")
+
+
     def __register_prefixes(self, rdf_graph):
         """
         Registers the stored prefixes with the RDF graph.
@@ -437,9 +472,10 @@ class Neo4jStore(Store):
             multival_props_names=self.multival_props_predicates,
             prefixes=self.config.custom_prefixes,
         )
-
+        # print(f"Node: {node['uri']}")
         # Add RDF type triples
         for label in node.labels:
+            # print(label)
             if label != "Resource":  # Skip the Resource label
                 rdf_graph.add(
                     (

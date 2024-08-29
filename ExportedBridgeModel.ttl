@@ -365,3 +365,4 @@ ins:Girder a brcomp:Girder ;
     brcomp:height "1.25"^^xsd:float ;
     brcomp:length "56.75"^^xsd:float ;
     brcomp:width "12.0"^^xsd:float .
+
