@@ -440,13 +440,14 @@ class Neo4jStore(Store):
 
         # Add RDF type triples
         for label in node.labels:
-            rdf_graph.add(
-                (
-                    subject,
-                    RDF.type,
-                    URIRef(triple.handle_vocab_uri(self.mappings, label)),
+            if label != "Resource":  # Skip the Resource label
+                rdf_graph.add(
+                    (
+                        subject,
+                        RDF.type,
+                        URIRef(triple.handle_vocab_uri(self.mappings, label)),
+                    )
                 )
-            )
 
         # Add properties as RDF triples
         for key, value in node.items():
