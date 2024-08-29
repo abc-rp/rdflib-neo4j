@@ -1,21 +1,24 @@
+import logging
 from typing import Dict
 
+from neo4j import WRITE_ACCESS, Driver, GraphDatabase
+from rdflib import Graph, Literal, URIRef
+from rdflib.namespace import RDF
 from rdflib.store import Store
-from neo4j import GraphDatabase, Driver
-from neo4j import WRITE_ACCESS
-import logging
 
-from rdflib_neo4j.Neo4jTriple import Neo4jTriple
-from rdflib_neo4j.config.Neo4jStoreConfig import Neo4jStoreConfig
+# Directly import HANDLE_VOCAB_URI_STRATEGY from its definition module
 from rdflib_neo4j.config.const import NEO4J_DRIVER_USER_AGENT_NAME
+from rdflib_neo4j.config.Neo4jStoreConfig import Neo4jStoreConfig
 from rdflib_neo4j.config.utils import check_auth_data
+from rdflib_neo4j.Neo4jTriple import Neo4jTriple
 from rdflib_neo4j.query_composers.NodeQueryComposer import NodeQueryComposer
-from rdflib_neo4j.query_composers.RelationshipQueryComposer import RelationshipQueryComposer
+from rdflib_neo4j.query_composers.RelationshipQueryComposer import (
+    RelationshipQueryComposer,
+)
 from rdflib_neo4j.utils import handle_neo4j_driver_exception
 
 
 class Neo4jStore(Store):
-
     context_aware = True
 
     def __init__(self, config: Neo4jStoreConfig, neo4j_driver: Driver = None):
@@ -28,9 +31,11 @@ class Neo4jStore(Store):
         if not neo4j_driver:
             check_auth_data(config.auth_data)
         elif config.auth_data:
-            raise Exception("Either initialize the store with credentials or driver. You cannot do both.")
+            raise Exception(
+                "Either initialize the store with credentials or driver. You cannot do both."
+            )
 
-        super(Neo4jStore, self).__init__(config.get_config_dict())
+        super().__init__(config.get_config_dict())
 
         self.batching = config.batching
         self.buffer_max_size = config.batch_size
@@ -72,7 +77,7 @@ class Neo4jStore(Store):
         self.session.close()
         self.__set_open(False)
         print(f"IMPORTED {self.total_triples} TRIPLES")
-        self.total_triples=0
+        self.total_triples = 0
 
     def is_open(self):
         """
@@ -131,7 +136,9 @@ class Neo4jStore(Store):
         self.__flushBuffer(commit_nodes, commit_rels)
 
     def remove(self, triple, context=None, txn=None):
-        raise NotImplemented("This is a streamer so it doesn't preserve the state, there is no removal feature.")
+        raise NotImplemented(
+            "This is a streamer so it doesn't preserve the state, there is no removal feature."
+        )
 
     def __close_on_error(self):
         """
@@ -158,10 +165,10 @@ class Neo4jStore(Store):
         if not self.driver:
             auth_data = self.config.auth_data
             self.driver = GraphDatabase.driver(
-                auth_data['uri'],
-                auth=(auth_data['user'], auth_data['pwd']),
-                database=auth_data.get('database', 'neo4j'),
-                user_agent=NEO4J_DRIVER_USER_AGENT_NAME
+                auth_data["uri"],
+                auth=(auth_data["user"], auth_data["pwd"]),
+                database=auth_data.get("database", "neo4j"),
+                user_agent=NEO4J_DRIVER_USER_AGENT_NAME,
             )
         return self.driver
 
@@ -173,9 +180,7 @@ class Neo4jStore(Store):
 
         """
         auth_data = self.config.auth_data
-        self.session = self.__get_driver().session(
-            default_access_mode=WRITE_ACCESS
-        )
+        self.session = self.__get_driver().session(default_access_mode=WRITE_ACCESS)
 
     def __constraint_check(self, create):
         """
@@ -187,11 +192,11 @@ class Neo4jStore(Store):
         """
         # Test connectivity to backend and check that constraint on :Resource(uri) is present
         constraint_check = """
-           SHOW CONSTRAINTS YIELD * 
-           WHERE type = "UNIQUENESS" 
-               AND entityType = "NODE" 
-               AND labelsOrTypes = ["Resource"] 
-               AND properties = ["uri"] 
+           SHOW CONSTRAINTS YIELD *
+           WHERE type = "UNIQUENESS"
+               AND entityType = "NODE"
+               AND labelsOrTypes = ["Resource"]
+               AND properties = ["uri"]
            RETURN COUNT(*) = 1 AS constraint_found
            """
         result = self.session.run(constraint_check)
@@ -206,13 +211,17 @@ class Neo4jStore(Store):
                 self.session.run(create_constraint)
                 print("Uniqueness constraint on :Resource(uri) is created.")
             except Exception as e:
-                print("Error: Unable to create the uniqueness constraint. Make sure you have the necessary privileges.")
+                print(
+                    "Error: Unable to create the uniqueness constraint. Make sure you have the necessary privileges."
+                )
                 print("Exception: ", e)
         else:
-            print(f"""Uniqueness constraint on :Resource(uri) {"" if constraint_found else "not "}found. 
+            print(
+                f"""Uniqueness constraint on :Resource(uri) {"" if constraint_found else "not "}found.
                {"" if constraint_found else "Run the following command on the Neo4j DB to create the constraint: "
-                                            "CREATE CONSTRAINT n10s_unique_uri FOR (r:Resource) REQUIRE r.uri IS UNIQUE. Or provide create=True to create it."} 
-                """)
+                                            "CREATE CONSTRAINT n10s_unique_uri FOR (r:Resource) REQUIRE r.uri IS UNIQUE. Or provide create=True to create it."}
+                """
+            )
 
     def __store_current_subject_props(self):
         """
@@ -222,12 +231,18 @@ class Neo4jStore(Store):
         """
         label_key = self.current_subject.extract_label_key()
         if label_key not in self.node_buffer:
-            self.node_buffer[label_key] = NodeQueryComposer(labels=self.current_subject.labels,
-                                                            handle_multival_strategy=self.handle_multival_strategy,
-                                                            multival_props_predicates=self.multival_props_predicates)
+            self.node_buffer[label_key] = NodeQueryComposer(
+                labels=self.current_subject.labels,
+                handle_multival_strategy=self.handle_multival_strategy,
+                multival_props_predicates=self.multival_props_predicates,
+            )
 
-        self.node_buffer[label_key].add_props(self.current_subject.extract_props_names())
-        self.node_buffer[label_key].add_props(self.current_subject.extract_props_names(multi=True), multi=True)
+        self.node_buffer[label_key].add_props(
+            self.current_subject.extract_props_names()
+        )
+        self.node_buffer[label_key].add_props(
+            self.current_subject.extract_props_names(multi=True), multi=True
+        )
         query_params = self.current_subject.extract_params()
         self.node_buffer[label_key].add_query_param(query_params)
         self.node_buffer_size += 1
@@ -244,7 +259,9 @@ class Neo4jStore(Store):
                 if rel_type not in self.rel_buffer:
                     self.rel_buffer[rel_type] = RelationshipQueryComposer(rel_type)
                 for to_node in rel_types_and_relationships[rel_type]:
-                    self.rel_buffer[rel_type].add_query_param(from_node=self.current_subject.uri, to_node=to_node)
+                    self.rel_buffer[rel_type].add_query_param(
+                        from_node=self.current_subject.uri, to_node=to_node
+                    )
                     self.rel_buffer_size += 1
 
     def __store_current_subject(self):
@@ -257,12 +274,14 @@ class Neo4jStore(Store):
         self.__store_current_subject_rels()
 
     def __create_current_subject(self, subject):
-        return Neo4jTriple(uri=subject,
-                           prefixes={value: key for key, value in self.config.get_prefixes().items()},
-                           # Reversing the Prefix dictionary
-                           handle_vocab_uri_strategy=self.handle_vocab_uri_strategy,
-                           handle_multival_strategy=self.handle_multival_strategy,
-                           multival_props_names=self.multival_props_predicates)
+        return Neo4jTriple(
+            uri=subject,
+            prefixes={value: key for key, value in self.config.get_prefixes().items()},
+            # Reversing the Prefix dictionary
+            handle_vocab_uri_strategy=self.handle_vocab_uri_strategy,
+            handle_multival_strategy=self.handle_multival_strategy,
+            multival_props_names=self.multival_props_predicates,
+        )
 
     def __check_current_subject(self, subject):
         """
@@ -339,3 +358,131 @@ class Neo4jStore(Store):
             e = handle_neo4j_driver_exception(e)
             logging.error(e)
             raise e
+
+    def export_to_ttl(self, ttl_file_path: str):
+        """
+        Exports the contents of the Neo4j store back to a TTL file.
+
+        Args:
+            ttl_file_path (str): The path to the TTL file to write the RDF triples.
+        """
+        assert self.is_open(), "The Store must be open to export."
+
+        # Create a new RDF graph
+        rdf_graph = Graph()
+
+        # Register prefixes
+        self.__register_prefixes(rdf_graph)
+
+        # Retrieve all nodes and relationships from Neo4j
+        self.__retrieve_nodes_and_relationships(rdf_graph)
+
+        # Serialize the RDF graph to a TTL file
+        rdf_graph.serialize(destination=ttl_file_path, format="turtle")
+        print(f"RDF data successfully exported to {ttl_file_path}")
+
+    def __register_prefixes(self, rdf_graph):
+        """
+        Registers the stored prefixes with the RDF graph.
+
+        Args:
+            rdf_graph (Graph): The RDF graph to register the prefixes.
+        """
+        for prefix, namespace in self.config.custom_prefixes.items():
+            rdf_graph.bind(prefix, namespace)
+
+    def __retrieve_nodes_and_relationships(self, rdf_graph):
+        """
+        Helper method to retrieve nodes and relationships from Neo4j
+        and add them as triples to the RDF graph.
+
+        Args:
+            rdf_graph (Graph): The RDF graph to add the triples.
+        """
+        # Query to retrieve all nodes and their labels and properties
+        node_query = """
+        MATCH (n)
+        RETURN n
+        """
+        nodes = self.session.run(node_query)
+
+        for node in nodes:
+            self.__add_node_to_graph(node["n"], rdf_graph)
+
+        # Query to retrieve all relationships and their types and properties
+        relationship_query = """
+        MATCH (n)-[r]->(m)
+        RETURN n, r, m
+        """
+        relationships = self.session.run(relationship_query)
+
+        for rel in relationships:
+            self.__add_relationship_to_graph(rel["n"], rel["r"], rel["m"], rdf_graph)
+
+    def __add_node_to_graph(self, node, rdf_graph):
+        """
+        Converts a Neo4j node to RDF triples and adds them to the RDF graph.
+
+        Args:
+            node: The Neo4j node to convert.
+            rdf_graph (Graph): The RDF graph to add the triples.
+        """
+        subject = URIRef(node["uri"])
+
+        # Create a Neo4jTriple instance for the current node
+        triple = Neo4jTriple(
+            uri=subject,
+            handle_vocab_uri_strategy=self.handle_vocab_uri_strategy,
+            handle_multival_strategy=self.handle_multival_strategy,
+            multival_props_names=self.multival_props_predicates,
+            prefixes=self.config.custom_prefixes,
+        )
+
+        # Add RDF type triples
+        for label in node.labels:
+            rdf_graph.add(
+                (
+                    subject,
+                    RDF.type,
+                    URIRef(triple.handle_vocab_uri(self.mappings, label)),
+                )
+            )
+
+        # Add properties as RDF triples
+        for key, value in node.items():
+            if key != "uri":
+                predicate = URIRef(triple.handle_vocab_uri(self.mappings, key))
+                rdf_graph.add((subject, predicate, Literal(value)))
+
+    def __add_relationship_to_graph(
+        self, start_node, relationship, end_node, rdf_graph
+    ):
+        """
+        Converts a Neo4j relationship to RDF triples and adds them to the RDF graph.
+
+        Args:
+            start_node: The starting Neo4j node of the relationship.
+            relationship: The Neo4j relationship to convert.
+            end_node: The ending Neo4j node of the relationship.
+            rdf_graph (Graph): The RDF graph to add the triples.
+        """
+        subject = URIRef(start_node["uri"])
+        object = URIRef(end_node["uri"])
+
+        # Create a Neo4jTriple instance for the current relationship
+        triple = Neo4jTriple(
+            uri=subject,
+            handle_vocab_uri_strategy=self.handle_vocab_uri_strategy,
+            handle_multival_strategy=self.handle_multival_strategy,
+            multival_props_names=self.multival_props_predicates,
+            prefixes=self.config.custom_prefixes,
+        )
+
+        predicate = URIRef(triple.handle_vocab_uri(self.mappings, relationship.type))
+        rdf_graph.add((subject, predicate, object))
+
+        # Add any properties on the relationship as triples
+        for key, value in relationship.items():
+            if key not in ["uri"]:
+                prop_predicate = URIRef(triple.handle_vocab_uri(self.mappings, key))
+                rdf_graph.add((predicate, prop_predicate, Literal(value)))

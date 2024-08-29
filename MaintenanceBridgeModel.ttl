@@ -1,0 +1,379 @@
+@prefix brcomp: <https://w3id.org/brcomp#> .
+@prefix brot: <https://w3id.org/brot#> .
+@prefix brstr: <https://w3id.org/brstr#> .
+@prefix dot: <https://w3id.org/dot#> .
+@prefix ins: <http://example.org/sibbw79366620/RelocBridgeModel#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix reloc: <https://w3id.org/reloc#> .
+@prefix sib: <http://example.org/sibbw79366620#> .
+@prefix asb: <https://w3id.org/asbingowl/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+
+ins:Span_0 a brstr:Span ;
+    rdfs:label "Span 0" .
+
+ins:Substructure_Zone a brot:SubStructure ;
+    rdfs:label "Substructure Zone" ;
+    brot:containsComponent ins:AbutmentWingWall_Span_2_right,
+        ins:Abutment_Span_0,
+        ins:Abutment_Span_2,
+        ins:Footing_Span_0,
+        ins:Footing_Span_1,
+        ins:Footing_Span_2,
+        ins:Pier_Span_1_1_left,
+        ins:Pier_Span_1_1_right;
+    reloc:containedInBottom ins:Bridge .
+
+ins:Superstructure_Zone a brot:SuperStructure ;
+    rdfs:label "Superstructure Zone" ;
+    brot:containsComponent ins:Cap_left,
+        ins:Cap_right,
+        ins:Coating,
+        ins:Girder,
+        ins:GirderCrossGirder_Span_1,
+        ins:GirderDeck,
+        ins:GirderMainGirder_Span_1_1_right,
+        ins:GirderMainGirder_Span_1_2_right,
+        ins:GirderMainGirder_Span_1_3_right,
+        ins:GirderMainGirder_Span_1_4_right,
+        ins:GirderMainGirder_Span_2_1_right,
+        ins:GirderMainGirder_Span_2_2_right,
+        ins:GirderMainGirder_Span_2_3_right,
+        ins:GirderMainGirder_Span_2_4_right,
+        ins:Joint_front,
+        ins:Joint_rear,
+        ins:Railing_left,
+        ins:Railing_right,
+        ins:TrafficBarrier_left,
+        ins:TrafficBarrier_right;
+    reloc:containedInTop ins:Bridge .
+
+ins:Footing_Span_0 a brcomp:Footing ;
+    rdfs:label "Footing Span 0" ;
+    reloc:containedInLongitudinalCenter ins:Abutment_Span_0 ;
+    reloc:containedInTransversalCenter ins:Abutment_Span_0 ;
+    reloc:meetBottom ins:Abutment_Span_0 .
+
+ins:Footing_Span_1 a brcomp:Footing ;
+    rdfs:label "Footing Span 1" ;
+    reloc:containedInLongitudinalCenter ins:Pier_Span_1 ;
+    reloc:containedInTransversalCenter ins:Pier_Span_1 ;
+    reloc:meetBottom ins:Pier_Span_1 .
+
+ins:Footing_Span_2 a brcomp:Footing ;
+    rdfs:label "Footing Span 2" ;
+    reloc:containedInLongitudinalCenter ins:Abutment_Span_2 ;
+    reloc:containedInTransversalCenter ins:Abutment_Span_2 ;
+    reloc:meetBottom ins:Abutment_Span_2 .
+
+ins:GirderCrossGirder_Span_1 a brcomp:GirderCrossGirder ;
+    rdfs:label "GirderCrossGirder_Span_1" ;
+    brcomp:width "12.0"^^xsd:float ;
+    reloc:containedInBottom ins:Girder ;
+    reloc:equalTransversal ins:Girder ;
+    reloc:intersectRear ins:Span_1 .
+
+ins:Pier_Span_1_1_right a brcomp:Pier ;
+    rdfs:label "Pier Right" ;
+    brcomp:height "5.0"^^xsd:float ;
+    brcomp:length "2.0"^^xsd:float ;
+    brcomp:width "6.0"^^xsd:float ;
+    reloc:equalLongitudinal ins:Pier_Span_1 ;
+    reloc:equalVertical ins:Pier_Span_1 ;
+    reloc:containedInRight ins:Pier_Span_1;
+    reloc:meetRight ins:Pier_Span_1_1_left .
+
+ins:Pier_Span_1 a brot:Zone ;
+    rdfs:label "Pier_Zone" ;
+    rdfs:comment "length is default value" ;
+    brcomp:height "6.05"^^xsd:float ;
+    brcomp:length "2.0"^^xsd:float ;
+    brcomp:width "12.0"^^xsd:float ;
+    reloc:equalTransversal ins:Girder ;
+    reloc:intersectRear ins:Span_1 ;
+    reloc:meetBottom ins:GirderDeck .
+
+ins:Railing_left a brcomp:Railing ;
+    rdfs:label "Railing left" ;
+    rdfs:comment "width is default value" ;
+    brcomp:height "1.1"^^xsd:float ;
+    brcomp:length "55.5"^^xsd:float ;
+    brcomp:width "0.25"^^xsd:float ;
+    reloc:containedInLeft ins:Cap_left ;
+    reloc:equalLongitudinal ins:Cap_left ;
+    reloc:meetTop ins:Cap_left .
+
+ins:TrafficBarrier_left a brcomp:TrafficBarrier ;
+    rdfs:label "TrafficBarrier left" ;
+    rdfs:comment "width is default value" ;
+    brcomp:height "0.6"^^xsd:float ;
+    brcomp:length "55.99"^^xsd:float ;
+    brcomp:width "0.5"^^xsd:float ;
+    reloc:containedInTransversalCenter ins:Cap_left ;
+    reloc:equalLongitudinal ins:Cap_left ;
+    reloc:meetTop ins:Cap_left .
+
+ins:TrafficBarrier_right a brcomp:TrafficBarrier ;
+    rdfs:label "TrafficBarrier right" ;
+    rdfs:comment "width is default value" ;
+    brcomp:height "0.6"^^xsd:float ;
+    brcomp:length "55.99"^^xsd:float ;
+    brcomp:width "0.5"^^xsd:float ;
+    reloc:containedInTransversalCenter ins:Cap_right ;
+    reloc:equalLongitudinal ins:Cap_right ;
+    reloc:meetTop ins:Cap_right .
+
+ins:GirderDeck a brcomp:GirderDeck ;
+    rdfs:label "GirderDeck" ;
+    rdfs:comment "height is default value" ;
+    brcomp:height "0.2"^^xsd:float ;
+    brcomp:length "56.75"^^xsd:float ;
+    brcomp:width "12.0"^^xsd:float ;
+    reloc:containedInTop ins:Girder ;
+    reloc:equalLongitudinal ins:Girder ;
+    reloc:equalTransversal ins:Girder .
+
+ins:GirderMainGirder_Span_1_4_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 1, 4th element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float ;
+    reloc:containedInBottom ins:Girder ;
+    reloc:containedInLeft ins:Girder ;
+    reloc:containedInLongitudinalCenter ins:Span_1 ;
+    reloc:meetLeft ins:GirderMainGirder_Span_1_3_right .
+
+ins:GirderMainGirder_Span_2_1_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 2, first element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float ;
+    reloc:containedInBottom ins:Girder ;
+    reloc:containedInLongitudinalCenter ins:Span_2 ;
+    reloc:containedInRight ins:Girder ;
+    reloc:meetRight ins:GirderMainGirder_Span_2_2_right .
+
+ins:GirderMainGirder_Span_2_4_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 2, 4th element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float ;
+    reloc:containedInBottom ins:Girder ;
+    reloc:containedInLeft ins:Girder ;
+    reloc:containedInLongitudinalCenter ins:Span_2 ;
+    reloc:meetLeft ins:GirderMainGirder_Span_2_3_right .
+
+ins:Pier_Span_1_1_left a brcomp:Pier ;
+    rdfs:label "Pier left" ;
+    brcomp:height "5.0"^^xsd:float ;
+    brcomp:length "2.0"^^xsd:float ;
+    brcomp:width "6.0"^^xsd:float ;
+    reloc:equalLongitudinal ins:Pier_Span_1 ;
+    reloc:equalVertical ins:Pier_Span_1 ;
+    reloc:containedInLeft ins:Pier_Span_1;
+    reloc:meetLeft ins:Pier_Span_1_1_right .
+
+ins:AbutmentWingWall_Span_2_right a brcomp:AbutmentWingWall ;
+    rdfs:label "AbutmentWingWall Span 2 right" ;
+    rdfs:comment "length is default value",
+        "width is default value" ;
+    brcomp:height "5.27"^^xsd:float ;
+    brcomp:length "8.0"^^xsd:float ;
+    brcomp:width "1.5"^^xsd:float ;
+    reloc:containedInRight ins:Abutment_Span_2 ;
+    reloc:equalVertical ins:Abutment_Span_2 ;
+    reloc:meetRear ins:Abutment_Span_2 .
+
+ins:GirderMainGirder_Span_1_3_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 1, 3rd element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float ;
+    reloc:containedInBottom ins:Girder ;
+    reloc:containedInLongitudinalCenter ins:Span_1 ;
+    reloc:meetLeft ins:GirderMainGirder_Span_1_2_right ;
+    reloc:meetRight ins:GirderMainGirder_Span_1_4_right .
+
+ins:GirderMainGirder_Span_2_2_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 2, 2nd element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float ;
+    reloc:containedInBottom ins:Girder ;
+    reloc:containedInLongitudinalCenter ins:Span_2 ;
+    reloc:meetLeft ins:GirderMainGirder_Span_2_1_right ;
+    reloc:meetRight ins:GirderMainGirder_Span_2_3_right .
+
+ins:GirderMainGirder_Span_2_3_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 2, 3rd element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float ;
+    reloc:containedInBottom ins:Girder ;
+    reloc:containedInLongitudinalCenter ins:Span_2 ;
+    reloc:meetLeft ins:GirderMainGirder_Span_2_2_right ;
+    reloc:meetRight ins:GirderMainGirder_Span_2_4_right .
+
+ins:Span_2 a brstr:Span ;
+    rdfs:label "Span 2" ;
+    brstr:spanWidth "28.37"^^xsd:float ;
+    reloc:meetRear ins:Span_1 .
+
+ins:GirderMainGirder_Span_1_2_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 1, 2nd element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float ;
+    reloc:containedInBottom ins:Girder ;
+    reloc:containedInLongitudinalCenter ins:Span_1 ;
+    reloc:meetLeft ins:GirderMainGirder_Span_1_1_right ;
+    reloc:meetRight ins:GirderMainGirder_Span_1_3_right .
+
+ins:GirderMainGirder_Span_1_1_right a brcomp:GirderMainGirder ;
+    rdfs:label "GirderMainGirder Span 1, first element from right" ;
+    brcomp:height "1.05"^^xsd:float ;
+    brcomp:length "26.62"^^xsd:float ;
+    brcomp:width "3.0"^^xsd:float ;
+    reloc:containedInBottom ins:Girder ;
+    reloc:containedInLongitudinalCenter ins:Span_1 ;
+    reloc:containedInRight ins:Girder ;
+    reloc:meetRight ins:GirderMainGirder_Span_1_2_right .
+
+ins:Site a brot:Site ;
+    rdfs:label "Site" .
+
+ins:Span_1 a brstr:Span ;
+    rdfs:label "Span 1" ;
+    brstr:spanWidth "28.37"^^xsd:float .
+
+ins:Cap_left a brcomp:Cap ;
+    rdfs:label "Cap left" ;
+    rdfs:comment "height is default value" ;
+    brcomp:height "0.35"^^xsd:float ;
+    brcomp:length "56.75"^^xsd:float ;
+    brcomp:width "2.0"^^xsd:float ;
+    reloc:containedInLeft ins:Girder ;
+    reloc:equalLongitudinal ins:Girder ;
+    reloc:intersectTop ins:Girder .
+
+ins:Abutment_Span_2 a brcomp:Abutment ;
+    rdfs:label "Abutment_Span_2" ;
+    rdfs:comment "length is default value" ;
+    brcomp:height "5.27"^^xsd:float ;
+    brcomp:length "1.5"^^xsd:float ;
+    brcomp:width "12.0"^^xsd:float ;
+    reloc:equalTransversal ins:Girder ;
+    reloc:intersectRear ins:Girder ;
+    reloc:meetBottom ins:Girder .
+
+
+ins:Bridge a brot:Bridge ;
+    rdfs:label "Bridge" ;
+    brcomp:height "7.5"^^xsd:float ;
+    brcomp:length "56.75"^^xsd:float ;
+    brcomp:width "12.0"^^xsd:float.
+
+ins:Railing_right a brcomp:Railing ;
+    rdfs:label "Railing right" ;
+    rdfs:comment "width is default value" ;
+    brcomp:height "1.1"^^xsd:float ;
+    brcomp:length "54.74"^^xsd:float ;
+    brcomp:width "0.25"^^xsd:float ;
+    reloc:containedInRight ins:Cap_right ;
+    reloc:equalLongitudinal ins:Cap_right ;
+    reloc:meetTop ins:Cap_right .
+
+ins:Abutment_Span_0 a brcomp:Abutment ;
+    rdfs:label "Abutment_Span_0" ;
+    rdfs:comment "length is default value" ;
+    brcomp:height "5.15"^^xsd:float ;
+    brcomp:length "1.5"^^xsd:float ;
+    brcomp:width "12.0"^^xsd:float ;
+    dot:hasDamageArea ins:DamageArea_NY0LZ32M;
+    reloc:equalTransversal ins:Girder ;
+    reloc:intersectFront ins:Girder ;
+    reloc:meetBottom ins:Girder .
+
+ins:Cap_right a brcomp:Cap ;
+    rdfs:label "Cap right" ;
+    rdfs:comment "height is default value" ;
+    brcomp:height "0.35"^^xsd:float ;
+    brcomp:length "56.75"^^xsd:float ;
+    brcomp:width "2.0"^^xsd:float ;
+    dot:hasDamageArea
+        ins:DamageArea_NY0M9P1L;
+    reloc:containedInRight ins:Girder ;
+    reloc:equalLongitudinal ins:Girder ;
+    reloc:intersectTop ins:Girder .
+
+ins:Joint_front a brot:Joint ;
+    rdfs:label "Roadway junction front" ;
+    rdfs:comment "height is default value" ;
+    brcomp:height "0.05"^^xsd:float ;
+    brcomp:length "0.027"^^xsd:float ;
+    brcomp:width "12.0"^^xsd:float ;
+    dot:hasDamageArea
+        ins:DamageArea_RE0UU0J5;
+    reloc:containedInTop ins:Coating ;
+    reloc:equalTransversal ins:Girder ;
+    reloc:intersectFront ins:Girder .
+
+ins:Coating a brot:Coating ;
+    rdfs:label "Roadway Coating" ;
+    rdfs:comment "height is default value" ;
+    brcomp:height "0.08"^^xsd:float ;
+    brcomp:length "56.75"^^xsd:float ;
+    brcomp:width "8.0"^^xsd:float ;
+    reloc:equalLongitudinal ins:Girder ;
+    reloc:meetLeft ins:Cap_right ;
+    reloc:meetRight ins:Cap_left ;
+    reloc:meetTop ins:Girder .
+
+ins:Joint_rear a brot:Joint ;
+    rdfs:label "Roadway Junciton rear" ;
+    rdfs:comment "height is default value" ;
+    brcomp:height "0.05"^^xsd:float ;
+    brcomp:length "0.027"^^xsd:float ;
+    brcomp:width "12.0"^^xsd:float ;
+    reloc:containedInTop ins:Coating ;
+    reloc:equalTransversal ins:Girder ;
+    reloc:intersectRear ins:Girder .
+
+ins:Girder a brcomp:Girder ;
+    rdfs:label "Girder" ;
+    brcomp:height "1.25"^^xsd:float ;
+    brcomp:length "56.75"^^xsd:float ;
+    brcomp:width "12.0"^^xsd:float  .
+
+
+ins:DamageArea_NY0LZ32M a dot:DamageArea ;
+    rdfs:label "DamageArea_NY0LZ32M" ;
+    rdfs:comment "DamageLength: None DamageWidth: None" ;
+    asb:Schaden_ID-Nummer-Schaden 21 ;
+    asb:Schaden_Foto "\\WIDERLAGER VORN - STIRNWAND LINKS UNTEN.JPG" ;
+    brcomp:height "1.72"^^xsd:float ;
+    brcomp:length "1.5"^^xsd:float ;
+    brcomp:width "4.0"^^xsd:float ;
+    reloc:containedInBottom ins:Abutment_Span_0 ;
+    reloc:containedInLeft ins:Abutment_Span_0 .
+
+
+ins:DamageArea_NY0M9P1L a dot:DamageArea ;
+    rdfs:label "DamageArea_NY0M9P1L" ;
+    rdfs:comment "DamageLength: None DamageWidth: None" ;
+    asb:Schaden_Foto "SCHADEN 3.JPG" ;
+    asb:Schaden_ID-Nummer-Schaden 3 ;
+    brcomp:height "0.35"^^xsd:float ;
+    brcomp:length "56.75"^^xsd:float ;
+    brcomp:width "2.0"^^xsd:float .
+
+
+ins:DamageArea_RE0UU0J5 a dot:DamageArea ;
+    rdfs:label "DamageArea_RE0UU0J5" ;
+    asb:Schaden_Foto "\\SCHADEN 12.JPG" ;
+    asb:Schaden_ID-Nummer-Schaden 12 ;
+    reloc:containedInLeft ins:Joint_front ;
+ .
