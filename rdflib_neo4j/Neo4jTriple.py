@@ -1,10 +1,15 @@
 from collections import defaultdict
 from decimal import Decimal
-from typing import Dict, Set, List
-from rdflib import Literal, URIRef, RDF
+from typing import Dict, List, Set
+
+from rdflib import RDF, Literal, URIRef
 from rdflib.term import Node
+
+from rdflib_neo4j.config.const import (
+    HANDLE_MULTIVAL_STRATEGY,
+    HANDLE_VOCAB_URI_STRATEGY,
+)
 from rdflib_neo4j.utils import handle_vocab_uri
-from rdflib_neo4j.config.const import HANDLE_VOCAB_URI_STRATEGY, HANDLE_MULTIVAL_STRATEGY
 
 
 class Neo4jTriple:
@@ -18,11 +23,14 @@ class Neo4jTriple:
     Represents a triple extracted from RDF data for use in a Neo4j database.
     """
 
-    def __init__(self, uri: Node,
-                 handle_vocab_uri_strategy: HANDLE_VOCAB_URI_STRATEGY,
-                 handle_multival_strategy: HANDLE_MULTIVAL_STRATEGY,
-                 multival_props_names: List[str],
-                 prefixes: Dict[str, str]):
+    def __init__(
+        self,
+        uri: Node,
+        handle_vocab_uri_strategy: HANDLE_VOCAB_URI_STRATEGY,
+        handle_multival_strategy: HANDLE_MULTIVAL_STRATEGY,
+        multival_props_names: List[str],
+        prefixes: Dict[str, str],
+    ):
         """
         Constructor for Neo4jTriple.
 
@@ -52,7 +60,7 @@ class Neo4jTriple:
         """
         self.labels.add(label)
 
-    def add_prop(self, prop_name: str, value: Literal, multi:bool=False):
+    def add_prop(self, prop_name: str, value: Literal, multi: bool = False):
         """
         Adds a property to the `props` dictionary of the Neo4jTriple object.
 
@@ -118,8 +126,8 @@ class Neo4jTriple:
             set: A set containing the extracted property names.
         """
         if not multi:
-            return set(key for key in self.props)
-        return set(key for key in self.multi_props)
+            return {key for key in self.props}
+        return {key for key in self.multi_props}
 
     def extract_rels(self):
         """
@@ -141,7 +149,9 @@ class Neo4jTriple:
         Returns:
             str: The handled predicate URI based on the specified strategy.
         """
-        return handle_vocab_uri(mappings, predicate, self.prefixes, self.handle_vocab_uri_strategy)
+        return handle_vocab_uri(
+            mappings, predicate, self.prefixes, self.handle_vocab_uri_strategy
+        )
 
     def parse_triple(self, triple, mappings):
         """
@@ -156,15 +166,24 @@ class Neo4jTriple:
         # Getting a property
         if isinstance(object, Literal):
             # Neo4j Python driver does not support decimal params
-            value = float(object.toPython()) if type(object.toPython()) == Decimal else object.toPython()
+            value = (
+                float(object.toPython())
+                if type(object.toPython()) == Decimal
+                else object.toPython()
+            )
             prop_name = self.handle_vocab_uri(mappings, predicate)
 
             # If at least a name is defined and the predicate is one of the properties defined by the user
-            if self.handle_multival_strategy == HANDLE_MULTIVAL_STRATEGY.ARRAY and \
-                    str(predicate) in self.multival_props_names:
+            if (
+                self.handle_multival_strategy == HANDLE_MULTIVAL_STRATEGY.ARRAY
+                and str(predicate) in self.multival_props_names
+            ):
                 self.add_prop(prop_name, value, True)
             # If the user doesn't define any predicate to manage as an array, then everything is an array
-            elif self.handle_multival_strategy == HANDLE_MULTIVAL_STRATEGY.ARRAY and not self.multival_props_names:
+            elif (
+                self.handle_multival_strategy == HANDLE_MULTIVAL_STRATEGY.ARRAY
+                and not self.multival_props_names
+            ):
                 self.add_prop(prop_name, value, True)
             else:
                 self.add_prop(prop_name, value)

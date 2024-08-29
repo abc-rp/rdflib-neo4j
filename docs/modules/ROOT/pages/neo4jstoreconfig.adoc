@@ -10,7 +10,7 @@ This object is used to configure the Neo4j Store to connect to your Neo4j Instan
 | batching | Boolean | False | boolean (True) | A boolean indicating whether batching is enabled.
 | batch_size | Integer | False | (5000) | An integer representing the batch size (The batch size is intended as number of entities to store inside the database (nodes/relationships) and not triples.
 | custom_mappings | List[Tuple[Str,Str,Str]] | False | Empty list | A list of tuples containing custom mappings for prefixes in the form (prefix, object_to_replace, new_object).
-| custom_prefixes | Dictionary | True ① | ({}) | A dictionary containing custom prefixes.  
+| custom_prefixes | Dictionary | True ① | ({}) | A dictionary containing custom prefixes.
 | handle_vocab_uri_strategy | HANDLE_VOCAB_URI_STRATEGY | False |IGNORE, KEEP, MAP, (SHORTEN) |
 
 * 'SHORTEN',  full uris are shortened using prefixes for property names, relationship names and labels. Fails if a prefix is not predefined for a namespace in the imported RDF.

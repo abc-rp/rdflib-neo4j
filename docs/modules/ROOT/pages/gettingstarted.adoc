@@ -3,7 +3,7 @@
 This page describes how to get started with this library, and set up your first RDF import.
 
 == Set up Neo4j
-To configure your Neo4j Graph DB, the process is simplified: initialize the database by establishing a uniqueness constraint on Resources' URIs. You can achieve this by executing the following Cypher fragment: 
+To configure your Neo4j Graph DB, the process is simplified: initialize the database by establishing a uniqueness constraint on Resources' URIs. You can achieve this by executing the following Cypher fragment:
 
 [source,cypher]
 ----

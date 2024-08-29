@@ -28,5 +28,3 @@ neo4ind:mongodb355 neo4voc:name "mongodb" ;
         a neo4voc:AwesomePlatform ;
         neo4voc:author "JB", "Jesus Barrasa";
         neo4voc:version "3.5.5" .
-
-

@@ -1,8 +1,14 @@
 from functools import wraps
 from time import time
 from typing import Dict
+
 from rdflib import URIRef
-from rdflib_neo4j.config.const import ShortenStrictException, HANDLE_VOCAB_URI_STRATEGY, NEO4J_DRIVER_DICT_MESSAGE
+
+from rdflib_neo4j.config.const import (
+    HANDLE_VOCAB_URI_STRATEGY,
+    NEO4J_DRIVER_DICT_MESSAGE,
+    ShortenStrictException,
+)
 
 
 def timing(f):
@@ -29,7 +35,11 @@ def timing(f):
         except Exception as e:
             print(e)
         te = time()
-        print('func:%r args:[%r, %r] took: %2.4f sec' % (f.__name__, args, kw, te - ts))
+        print(
+            "func:{!r} args:[{!r}, {!r}] took: {:2.4f} sec".format(
+                f.__name__, args, kw, te - ts
+            )
+        )
         return result
 
     return wrap
@@ -45,12 +55,12 @@ def getLocalPart(uri):
     Returns:
     The local part of the URI.
     """
-    pos = uri.rfind('#')
+    pos = uri.rfind("#")
     if pos < 0:
-        pos = uri.rfind('/')
+        pos = uri.rfind("/")
     if pos < 0:
-        pos = uri.rindex(':')
-    return uri[pos + 1:]
+        pos = uri.rindex(":")
+    return uri[pos + 1 :]
 
 
 def getNamespacePart(uri):
@@ -63,12 +73,13 @@ def getNamespacePart(uri):
     Returns:
     The namespace part of the URI.
     """
-    pos = uri.rfind('#')
+    pos = uri.rfind("#")
     if pos < 0:
-        pos = uri.rfind('/')
+        pos = uri.rfind("/")
     if pos < 0:
-        pos = uri.rindex(':')
-    return uri[0:pos + 1]
+        pos = uri.rindex(":")
+    return uri[0 : pos + 1]
+
 
 def handle_vocab_uri_ignore(predicate):
     """
@@ -131,10 +142,12 @@ def handle_vocab_uri_map(mappings: Dict[str, str], predicate: URIRef):
     return predicate
 
 
-def handle_vocab_uri(mappings: Dict[str, str],
-                     predicate: URIRef,
-                     prefixes: Dict[str, str],
-                     strategy: HANDLE_VOCAB_URI_STRATEGY):
+def handle_vocab_uri(
+    mappings: Dict[str, str],
+    predicate: URIRef,
+    prefixes: Dict[str, str],
+    strategy: HANDLE_VOCAB_URI_STRATEGY,
+):
     """
     Handles the given predicate URI based on the chosen strategy.
 

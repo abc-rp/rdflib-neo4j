@@ -1,4 +1,4 @@
-from typing import Set, List, Dict
+from typing import Dict, List, Set
 
 
 class RelationshipQueryComposer:
@@ -45,11 +45,11 @@ class RelationshipQueryComposer:
         Returns:
             str: The Neo4j query.
         """
-        q = f''' UNWIND $params as param 
-                 MERGE (from:Resource{{ uri : param["from"] }}) 
+        q = f""" UNWIND $params as param
+                 MERGE (from:Resource{{ uri : param["from"] }})
                  MERGE (to:Resource{{ uri : param["to"] }})
-             '''
-        q += f''' MERGE (from)-[r:`{self.rel_type}`]->(to)'''
+             """
+        q += f""" MERGE (from)-[r:`{self.rel_type}`]->(to)"""
         if self.props:
             raise NotImplemented
             # q += f'''SET {', '.join([f"""r.`{prop}` = coalesce(param["{prop}"],null)""" for prop in self.props])}'''

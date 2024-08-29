@@ -1,10 +1,14 @@
 from typing import List, Tuple
+
 from rdflib import Namespace, URIRef
+
 from rdflib_neo4j.config.const import (
     DEFAULT_PREFIXES,
+    HANDLE_MULTIVAL_STRATEGY,
+    HANDLE_VOCAB_URI_STRATEGY,
     PrefixNotFoundException,
-    HANDLE_VOCAB_URI_STRATEGY, HANDLE_MULTIVAL_STRATEGY
 )
+
 
 class Neo4jStoreConfig:
     """
@@ -30,29 +34,33 @@ class Neo4jStoreConfig:
     """
 
     def __init__(
-            self,
-            auth_data=None,
-            custom_mappings: List[Tuple[str, str, str]] = [],
-            custom_prefixes={},
-            batching=True,
-            batch_size=5000,
-            handle_vocab_uri_strategy=HANDLE_VOCAB_URI_STRATEGY.SHORTEN,
-            handle_multival_strategy=HANDLE_MULTIVAL_STRATEGY.OVERWRITE,
-            multival_props_names: List[Tuple[str, str]] = []
+        self,
+        auth_data=None,
+        custom_mappings: List[Tuple[str, str, str]] = [],
+        custom_prefixes={},
+        batching=True,
+        batch_size=5000,
+        handle_vocab_uri_strategy=HANDLE_VOCAB_URI_STRATEGY.SHORTEN,
+        handle_multival_strategy=HANDLE_MULTIVAL_STRATEGY.OVERWRITE,
+        multival_props_names: List[Tuple[str, str]] = [],
     ):
         self.default_prefixes = DEFAULT_PREFIXES
         self.auth_data = auth_data
         self.custom_prefixes = custom_prefixes
         self.custom_mappings = {}
         for mapping in custom_mappings:
-            self.set_custom_mapping(prefix_name=mapping[0], to_replace=mapping[1], new_value=mapping[2])
+            self.set_custom_mapping(
+                prefix_name=mapping[0], to_replace=mapping[1], new_value=mapping[2]
+            )
         self.batching = batching
         self.batch_size = batch_size
         self.handle_vocab_uri_strategy = handle_vocab_uri_strategy
         self.handle_multival_strategy = handle_multival_strategy
         self.multival_props_names = []
         for prop_name in multival_props_names:
-            self.set_multival_prop_name(prefix_name=prop_name[0], prop_name=prop_name[1])
+            self.set_multival_prop_name(
+                prefix_name=prop_name[0], prop_name=prop_name[1]
+            )
 
     def set_handle_vocab_uri_strategy(self, val: HANDLE_VOCAB_URI_STRATEGY):
         """
@@ -158,7 +166,9 @@ class Neo4jStoreConfig:
         total_prefixes = self.get_prefixes()
         if prefix_name not in total_prefixes:
             raise PrefixNotFoundException(prefix_name=prefix_name)
-        self.custom_mappings[URIRef(f'{total_prefixes[prefix_name]}{to_replace}')] = new_value
+        self.custom_mappings[
+            URIRef(f"{total_prefixes[prefix_name]}{to_replace}")
+        ] = new_value
 
     def delete_custom_mapping(self, prefix_name: str, to_replace: str):
         """
@@ -178,7 +188,7 @@ class Neo4jStoreConfig:
         all_prefixes = self.get_prefixes()
         if prefix_name not in all_prefixes:
             raise PrefixNotFoundException(prefix_name=prefix_name)
-        key = URIRef(f'{all_prefixes[prefix_name]}{to_replace}')
+        key = URIRef(f"{all_prefixes[prefix_name]}{to_replace}")
         if key in self.custom_mappings:
             del self.custom_mappings[key]
 

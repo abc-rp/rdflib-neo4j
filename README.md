@@ -4,14 +4,14 @@
 RDFLib Store backed by neo4j!
 
 
-If you're not familiar with RDFLib you can [learn more here](https://github.com/RDFLib/rdflib/#getting-started). 
+If you're not familiar with RDFLib you can [learn more here](https://github.com/RDFLib/rdflib/#getting-started).
 
 ## Getting Started
 Below are the procedures you should adhere to for both your Neo4j database and your Python code:
 
 
 ### On the Neo4j side
-To configure your Neo4j Graph DB, the process is simplified: initialize the database by establishing a uniqueness constraint on Resources' URIs. You can achieve this by executing the following Cypher fragment: 
+To configure your Neo4j Graph DB, the process is simplified: initialize the database by establishing a uniqueness constraint on Resources' URIs. You can achieve this by executing the following Cypher fragment:
 ```cypher
 CREATE CONSTRAINT n10s_unique_uri FOR (r:Resource) REQUIRE r.uri IS UNIQUE;
 ```

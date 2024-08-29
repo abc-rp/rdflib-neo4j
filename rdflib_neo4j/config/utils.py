@@ -1,4 +1,7 @@
-from rdflib_neo4j.config.const import NEO4J_AUTH_REQUIRED_FIELDS, WrongAuthenticationException
+from rdflib_neo4j.config.const import (
+    NEO4J_AUTH_REQUIRED_FIELDS,
+    WrongAuthenticationException,
+)
 
 
 def check_auth_data(auth):
@@ -13,9 +16,12 @@ def check_auth_data(auth):
     """
     if auth is None:
         raise Exception(
-            f"Please define the authentication dict. These are the required keys: {NEO4J_AUTH_REQUIRED_FIELDS}")
+            f"Please define the authentication dict. These are the required keys: {NEO4J_AUTH_REQUIRED_FIELDS}"
+        )
     for param_name in NEO4J_AUTH_REQUIRED_FIELDS:
         if param_name not in auth:
             raise WrongAuthenticationException(param_name=param_name)
         if not auth[param_name]:
-            raise Exception(f"The key {param_name} is defined in the authentication dict but the value is empty.")
+            raise Exception(
+                f"The key {param_name} is defined in the authentication dict but the value is empty."
+            )

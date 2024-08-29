@@ -1,11 +1,10 @@
-from typing import Set, List, Dict
+from typing import Dict, List, Set
 
 from rdflib_neo4j.config.const import HANDLE_MULTIVAL_STRATEGY
 
 
 def prop_query_append(prop):
-    return  f"""n.`{prop}` = CASE WHEN COALESCE(param["{prop}"], NULL) IS NULL THEN n.`{prop}` ELSE REDUCE(i=COALESCE(n.`{prop}`,[]), val IN param["{prop}"] | CASE WHEN val IN i THEN i ELSE i+val END) END """
-
+    return f"""n.`{prop}` = CASE WHEN COALESCE(param["{prop}"], NULL) IS NULL THEN n.`{prop}` ELSE REDUCE(i=COALESCE(n.`{prop}`,[]), val IN param["{prop}"] | CASE WHEN val IN i THEN i ELSE i+val END) END """
 
 
 def prop_query_single(prop):
@@ -61,7 +60,7 @@ class NodeQueryComposer:
             str: The Neo4j query.
         """
 
-        q = f''' UNWIND $params as param MERGE (n:Resource{{ uri : param["uri"] }}) '''
+        q = f""" UNWIND $params as param MERGE (n:Resource{{ uri : param["uri"] }}) """
         if self.labels:
             q += f'''SET {', '.join([f"""n:`{label}`""" for label in self.labels])} '''
         if self.props or self.multi_props:
@@ -80,16 +79,20 @@ class NodeQueryComposer:
             if self.multival_props_predicates:
                 # If there are properties treated as multivalued, use SET query for each property
                 # and SET query for each property to append to the array
-                q = f'''SET {', '.join([prop_query_single(prop) for prop in self.props])}''' if self.props else ''
+                q = (
+                    f"""SET {', '.join([prop_query_single(prop) for prop in self.props])}"""
+                    if self.props
+                    else ""
+                )
                 if self.multi_props:
-                    q += f''' SET {', '.join([prop_query_append(prop) for prop in self.multi_props])}'''
+                    q += f""" SET {', '.join([prop_query_append(prop) for prop in self.multi_props])}"""
             else:
                 # If all properties are treated as multivalued, use SET query to append to the array
-                q = f'''SET {', '.join([prop_query_append(prop) for prop in self.multi_props])}'''
+                q = f"""SET {', '.join([prop_query_append(prop) for prop in self.multi_props])}"""
         else:
             # Strategy to overwrite multiple values
             # Use SET query for each property
-            q = f'''SET {', '.join([prop_query_single(prop) for prop in self.props])}'''
+            q = f"""SET {', '.join([prop_query_single(prop) for prop in self.props])}"""
         return q
 
     def is_redundant(self):

@@ -73,6 +73,3 @@ Closes the store. If the field _batching_ is set to True in the Neo4jStoreConfig
 | Name | Type | Default | Description
 | commit_pending_transaction | bool | True | Flag indicating whether to commit any pending transaction before closing.
 |===
-
-
-

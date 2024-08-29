@@ -11,14 +11,14 @@ DEFAULT_PREFIXES = {
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "exterms": "http://www.example.org/terms/",
-    "ex": "http://www.example.org/indiv/"
+    "ex": "http://www.example.org/indiv/",
 }
 
 NEO4J_AUTH_REQUIRED_FIELDS = ["uri", "database", "user", "pwd"]
 NEO4J_DRIVER_USER_AGENT_NAME = "neo4j_labs_n10s_client_lib"
 
-class PrefixNotFoundException(Exception):
 
+class PrefixNotFoundException(Exception):
     # Constructor or Initializer
     def __init__(self, prefix_name):
         self.value = prefix_name
@@ -29,7 +29,6 @@ class PrefixNotFoundException(Exception):
 
 
 class ShortenStrictException(Exception):
-
     # Constructor or Initializer
     def __init__(self, namespace):
         self.namespace = namespace
@@ -40,7 +39,6 @@ class ShortenStrictException(Exception):
 
 
 class WrongAuthenticationException(Exception):
-
     # Constructor or Initializer
     def __init__(self, param_name):
         self.param_name = param_name
@@ -50,8 +48,8 @@ class WrongAuthenticationException(Exception):
         return f"""Missing {self.param_name} key inside the authentication definition. Remember that it should contain the following keys:
                 : [uri, database, user, pwd]"""
 
-class CypherMultipleTypesMultiValueException(Exception):
 
+class CypherMultipleTypesMultiValueException(Exception):
     # Constructor or Initializer
     def __init__(self):
         super().__init__()
@@ -59,8 +57,12 @@ class CypherMultipleTypesMultiValueException(Exception):
     def __str__(self):
         return f"""Values of a multivalued property must have the same datatype."""
 
+
 NEO4J_DRIVER_MULTIPLE_TYPE_ERROR_MESSAGE = """{code: Neo.ClientError.Statement.TypeError} {message: Neo4j only supports a subset of Cypher types for storage as singleton or array properties. Please refer to section cypher/syntax/values of the manual for more details.}"""
-NEO4J_DRIVER_DICT_MESSAGE = {NEO4J_DRIVER_MULTIPLE_TYPE_ERROR_MESSAGE: CypherMultipleTypesMultiValueException}
+NEO4J_DRIVER_DICT_MESSAGE = {
+    NEO4J_DRIVER_MULTIPLE_TYPE_ERROR_MESSAGE: CypherMultipleTypesMultiValueException
+}
+
 
 class HANDLE_VOCAB_URI_STRATEGY(Enum):
     """
@@ -72,6 +74,7 @@ class HANDLE_VOCAB_URI_STRATEGY(Enum):
     - IGNORE : Strategy to ignore the Namespace and get only the local part
 
     """
+
     SHORTEN = "SHORTEN"  # Strategy to shorten the URIs
     MAP = "MAP"  # Strategy to map the URIs using provided mappings
     KEEP = "KEEP"  # Strategy to keep the URIs
@@ -87,5 +90,6 @@ class HANDLE_MULTIVAL_STRATEGY(Enum):
 
     TO NOTICE : If the strategy is ARRAY and the Neo4jStoreConfig doesn't contain any predicate marked as multivalued, EVERY field will be treated as multivalued.
     """
+
     OVERWRITE = 1  # Strategy to overwrite multiple values
     ARRAY = 2  # Strategy to treat multiple values as an array

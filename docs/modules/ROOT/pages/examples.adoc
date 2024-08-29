@@ -52,7 +52,7 @@ graph_store.close(True)
 ----
 from rdflib_neo4j import Neo4jStoreConfig, Neo4jStore, HANDLE_VOCAB_URI_STRATEGY
 from rdflib import Namespace, Graph, URIRef, RDF, SKOS, Literal
-     
+
 
 # Define your custom prefixes
 prefixes = {
@@ -94,7 +94,7 @@ aura = URIRef("http://neo4j.com/voc/tech#AuraDB")
 graph_store.add((aura, RDF.type, SKOS.Concept))
 graph_store.add((aura, SKOS.prefLabel, Literal("AuraDB")))
 graph_store.add((aura, SKOS.broader, URIRef("http://neo4j.org/ind#neo4j355")))
-     
+
 ----
 
 === SPARQL Query with Batching
@@ -106,13 +106,13 @@ import urllib.parse
 
 endpoint = "https://id.nlm.nih.gov/mesh/sparql"
 sparql = """
-PREFIX rdfs: 
-PREFIX meshv: 
-PREFIX mesh: 
-PREFIX rdf: 
+PREFIX rdfs:
+PREFIX meshv:
+PREFIX mesh:
+PREFIX rdf:
 
 CONSTRUCT { ?s ?p ?o }
-FROM 
+FROM
 WHERE {
   {
     ?s ?p ?o
